@@ -39,4 +39,11 @@ public class SeatService {
         seatRepository.update("status = 'FREE' where id = ?1", id);
         return seatRepository.findById(id);
     }
+
+    @Transactional(REQUIRES_NEW)
+    public Seat busySeat(Long id) {
+        log.info("Update seat with id", id);
+        seatRepository.update("status = 'BUSY' where id = ?1", id);
+        return seatRepository.findById(id);
+    }
 }
