@@ -35,4 +35,9 @@ public class PaymentService {
         paymentRepository.persist(payment);
         return payment;
     }
+
+    public void deletePayment(Long paymentId) {
+        paymentRepository.deleteById(paymentId);
+        //Refund money to user
+    }
 }
