@@ -46,4 +46,8 @@ public class SeatService {
         seatRepository.update("status = 'BUSY' where id = ?1", id);
         return seatRepository.findById(id);
     }
+
+    public Seat findById(Long id) {
+        return seatRepository.findById(id);
+    }
 }
