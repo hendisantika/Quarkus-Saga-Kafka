@@ -2,6 +2,8 @@ package id.my.hendisantika.usecase;
 
 import id.my.hendisantika.event.PaymentProducer;
 import id.my.hendisantika.event.comsentation.SeatEventProducer;
+import id.my.hendisantika.model.Payment;
+import id.my.hendisantika.model.Seat;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,4 +29,18 @@ public class MakePaymentUseCase {
 
     private final SeatEventProducer seatEventProducer;
 
+    public Payment makeAPayment(Seat seat) {
+        log.info("Create payment  with seat  {}", seat.getId());
+        var payment = createPayment(seat);
+        try {
+            payment.setStatus("PAID");
+            paymentService.savePayment(payment);
+        } catch (Exception ex) {
+            seatEventProducer.sendSeatEvent(payment.getSeat());
+            return payment;
+        }
+
+        paymentProducer.sendPaymentEvent(payment);
+        return payment;
+    }
 }
