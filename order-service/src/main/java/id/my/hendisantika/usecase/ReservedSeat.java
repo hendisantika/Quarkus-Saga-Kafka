@@ -1,5 +1,6 @@
 package id.my.hendisantika.usecase;
 
+import id.my.hendisantika.event.SeatEventProducer;
 import id.my.hendisantika.model.Seat;
 import id.my.hendisantika.repository.UserRepository;
 import id.my.hendisantika.service.SeatService;
