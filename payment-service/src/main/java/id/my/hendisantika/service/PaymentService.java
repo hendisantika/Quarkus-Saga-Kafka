@@ -1,9 +1,11 @@
 package id.my.hendisantika.service;
 
 import id.my.hendisantika.event.comsentation.SeatEventProducer;
+import id.my.hendisantika.model.Payment;
 import id.my.hendisantika.repository.PaymentRepository;
 import id.my.hendisantika.repository.SeatRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,4 +29,10 @@ public class PaymentService {
     private final SeatEventProducer seatEventProducer;
 
     private final SeatRepository seatRepository;
+
+    @Transactional
+    public Payment savePayment(Payment payment) {
+        paymentRepository.persist(payment);
+        return payment;
+    }
 }
