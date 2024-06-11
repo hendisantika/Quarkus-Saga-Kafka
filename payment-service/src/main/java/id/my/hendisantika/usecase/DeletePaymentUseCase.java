@@ -1,6 +1,7 @@
 package id.my.hendisantika.usecase;
 
 import id.my.hendisantika.event.comsentation.SeatEventProducer;
+import id.my.hendisantika.service.PaymentService;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 

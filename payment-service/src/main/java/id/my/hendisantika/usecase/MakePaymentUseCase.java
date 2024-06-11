@@ -4,6 +4,7 @@ import id.my.hendisantika.event.PaymentProducer;
 import id.my.hendisantika.event.comsentation.SeatEventProducer;
 import id.my.hendisantika.model.Payment;
 import id.my.hendisantika.model.Seat;
+import id.my.hendisantika.service.PaymentService;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

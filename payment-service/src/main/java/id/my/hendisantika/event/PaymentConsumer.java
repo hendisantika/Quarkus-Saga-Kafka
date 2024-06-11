@@ -2,6 +2,8 @@ package id.my.hendisantika.event;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import id.my.hendisantika.model.Seat;
+import id.my.hendisantika.usecase.MakePaymentUseCase;
+import io.smallrye.reactive.messaging.kafka.Record;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

@@ -1,12 +1,16 @@
 package id.my.hendisantika.event;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import id.my.hendisantika.event.comsentation.SeatEventProducer;
 import id.my.hendisantika.model.Payment;
+import id.my.hendisantika.usecase.DeletePaymentUseCase;
+import io.smallrye.reactive.messaging.kafka.Record;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,7 +40,7 @@ public class PaymentProducer {
         emitter.send(Record.of(payment.getId(), paymentJson))
                 .whenComplete((success, failure) -> {
                     if (failure != null) {
-                        log.error("D'oh! " + failure.getMessage());
+                        log.error("D'oh! {}", failure.getMessage());
                         seatEventProducer.sendSeatEvent(payment.getSeat());
                         deletePaymentUseCase.deletePayment(payment.getId());
                     } else {
