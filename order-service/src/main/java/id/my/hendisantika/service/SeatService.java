@@ -50,4 +50,8 @@ public class SeatService {
     public Seat findById(Long id) {
         return seatRepository.findById(id);
     }
+
+    public Seat findFree() {
+        return seatRepository.find("status= 'FREE' ").firstResult();
+    }
 }
