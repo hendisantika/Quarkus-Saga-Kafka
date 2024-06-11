@@ -3,6 +3,7 @@ package id.my.hendisantika.usecase;
 import id.my.hendisantika.event.AllocateProducer;
 import id.my.hendisantika.event.compensation.PaymentProducerCompensation;
 import id.my.hendisantika.model.Seat;
+import id.my.hendisantika.service.SeatService;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
