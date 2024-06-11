@@ -36,4 +36,12 @@ public class PaymentService {
         return payment;
     }
 
+    public void deletePayment(Long paymentId) {
+        try {
+            paymentRepository.deleteById(paymentId);
+        } catch (Exception exception) {
+            paymentProducerCompensation.sendPaymentEvent(paymentRepository.findById(paymentId));
+        }
+    }
+
 }
