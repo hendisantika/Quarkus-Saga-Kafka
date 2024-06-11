@@ -40,4 +40,8 @@ public class PaymentService {
         paymentRepository.deleteById(paymentId);
         //Refund money to user
     }
+
+    public Payment findById(Long id) {
+        return paymentRepository.findById(id);
+    }
 }
