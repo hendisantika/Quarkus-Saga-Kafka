@@ -31,4 +31,8 @@ public class SeatService {
         log.info("Block a seat {}", seat.toString());
         seatRepository.update("status = 'OCCUPIED' where id = ?1", seat.getId());
     }
+
+    public Seat findById(Long id) {
+        return seatRepository.findById(id);
+    }
 }
