@@ -1,7 +1,10 @@
 package id.my.hendisantika.event;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import id.my.hendisantika.model.Payment;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 
@@ -24,4 +27,21 @@ public class PaymentProducer {
     private final DeletePaymentUseCase deletePaymentUseCase;
     @Channel("payments-out")
     Emitter<Record<Long, String>> emitter;
+
+    @SneakyThrows
+    public void sendPaymentEvent(Payment payment) {
+        log.info("Event sent {}", payment.getId());
+        ObjectMapper objectMapper = new ObjectMapper();
+        var paymentJson = objectMapper.writeValueAsString(payment);
+        emitter.send(Record.of(payment.getId(), paymentJson))
+                .whenComplete((success, failure) -> {
+                    if (failure != null) {
+                        log.error("D'oh! " + failure.getMessage());
+                        seatEventProducer.sendSeatEvent(payment.getSeat());
+                        deletePaymentUseCase.deletePayment(payment.getId());
+                    } else {
+                        log.info("Message processed successfully");
+                    }
+                });
+    }
 }
