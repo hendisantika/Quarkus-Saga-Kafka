@@ -8,6 +8,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : Quarkus-Saga-Kafka
@@ -41,6 +44,16 @@ public class MakePaymentUseCase {
         }
 
         paymentProducer.sendPaymentEvent(payment);
+        return payment;
+    }
+
+    private Payment createPayment(Seat seat) {
+        Payment payment = new Payment();
+        payment.setStatus("PAID");
+        payment.setAmount(new BigDecimal(10));
+        payment.setSeat(seat);
+        payment.setUser(seat.getUser());
+        payment.setDate(LocalDate.now());
         return payment;
     }
 }
