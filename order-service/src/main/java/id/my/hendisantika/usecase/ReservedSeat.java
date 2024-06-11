@@ -1,5 +1,7 @@
 package id.my.hendisantika.usecase;
 
+import id.my.hendisantika.model.Seat;
+import id.my.hendisantika.repository.UserRepository;
 import id.my.hendisantika.service.SeatService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -23,4 +25,15 @@ public class ReservedSeat {
 
     @Inject
     private final SeatService seatService;
+
+    private final UserRepository userRepository;
+    @Inject
+    private SeatEventProducer seatEventProducer;
+
+    public Seat reservedSeat(Seat seat) {
+        log.info("Update seat {}", seat.getId());
+        var seatToSave = seatService.lockSeat(seat.getId());
+        seatEventProducer.sendOrder(seatToSave);
+        return seatToSave;
+    }
 }
