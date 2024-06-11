@@ -1,14 +1,17 @@
 package id.my.hendisantika.controller;
 
+import id.my.hendisantika.model.Seat;
 import id.my.hendisantika.repository.SeatRepository;
 import id.my.hendisantika.repository.UserRepository;
 import id.my.hendisantika.service.SeatService;
 import id.my.hendisantika.usecase.ReservedSeat;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,4 +42,11 @@ public class OrderSeatResource {
     private final SeatRepository seatRepository;
 
     private final SeatService seatService;
+
+    @POST
+    public Response orderSeat(Seat seat) {
+        log.info("New order received ");
+        return Response.status(Response.Status.CREATED)
+                .entity(service.reservedSeat(seat)).build();
+    }
 }
