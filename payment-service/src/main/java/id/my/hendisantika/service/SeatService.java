@@ -1,11 +1,15 @@
 package id.my.hendisantika.service;
 
 import id.my.hendisantika.event.PaymentProducer;
+import id.my.hendisantika.model.Seat;
 import id.my.hendisantika.repository.SeatRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import static jakarta.transaction.Transactional.TxType.REQUIRES_NEW;
 
 /**
  * Created by IntelliJ IDEA.
@@ -27,4 +31,13 @@ public class SeatService {
 
     @Inject
     private final PaymentProducer paymentProducer;
+
+    @Transactional(REQUIRES_NEW)
+    public Seat blockSeat(Seat seat) {
+        log.info("Block a  seat ", seat.toString());
+
+        seat.setStatus("BLOCKED");
+        seatRepository.persistAndFlush(seat);
+        return seat;
+    }
 }
