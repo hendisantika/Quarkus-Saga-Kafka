@@ -28,9 +28,15 @@ public class SeatService {
 
     @Transactional(REQUIRES_NEW)
     public Seat lockSeat(Long id) {
-        log.info("Update seat with id", id);
+        log.info("Update seat with id {}", id);
         seatRepository.update("status = 'LOCKED' where id = ?1", id);
         return seatRepository.findById(id);
     }
 
+    @Transactional(REQUIRES_NEW)
+    public Seat unlockSeat(Long id) {
+        log.info("Update seat with id {}", id);
+        seatRepository.update("status = 'FREE' where id = ?1", id);
+        return seatRepository.findById(id);
+    }
 }
