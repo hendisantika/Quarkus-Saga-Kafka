@@ -1,8 +1,10 @@
 package id.my.hendisantika.service;
 
 import id.my.hendisantika.event.compensation.PaymentProducerCompensation;
+import id.my.hendisantika.model.Payment;
 import id.my.hendisantika.repository.PaymentRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,4 +25,15 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final PaymentProducerCompensation paymentProducerCompensation;
+
+    @Transactional
+    public Payment savePayment(Payment payment) {
+        try {
+            paymentRepository.persistAndFlush(payment);
+        } catch (Exception exception) {
+            paymentProducerCompensation.sendPaymentEvent(payment);
+        }
+        return payment;
+    }
+
 }
