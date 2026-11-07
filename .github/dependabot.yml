@@ -1,27 +1,66 @@
 version: 2
 updates:
+  # Maven dependencies for every Quarkus microservice
   - package-ecosystem: maven
-    directory: "/allocate-service"
+    directories:
+      - "/allocate-service"
+      - "/order-service"
+      - "/payment-service"
     schedule:
       interval: daily
-      time: '05:00'
+      time: "05:00"
       timezone: Asia/Jakarta
     open-pull-requests-limit: 10
-  - package-ecosystem: maven
-    directory: "/order-service"
-    schedule:
-      interval: daily
-      time: '05:00'
-      timezone: Asia/Jakarta
-    open-pull-requests-limit: 10
-  - package-ecosystem: maven
-    directory: "/payment-service"
-    schedule:
-      interval: daily
-      time: '05:00'
-      timezone: Asia/Jakarta
-    open-pull-requests-limit: 10
-  - package-ecosystem: "github-actions"
+    assignees:
+      - hendisantika
+    labels:
+      - dependencies
+      - java
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+      include: scope
+    groups:
+      quarkus:
+        patterns:
+          - "io.quarkus*"
+          - "io.quarkus.platform*"
+      maven-plugins:
+        patterns:
+          - "org.apache.maven.plugins*"
+      lombok:
+        patterns:
+          - "org.projectlombok*"
+      others:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+    ignore:
+      # Stay on the Quarkus 3.x line; majors (4.x) are migrated manually
+      - dependency-name: "io.quarkus.platform:*"
+        update-types: [ "version-update:semver-major" ]
+      - dependency-name: "io.quarkus:*"
+        update-types: [ "version-update:semver-major" ]
+
+  # GitHub Actions used by the CI workflow
+  - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: weekly
+      day: monday
+      time: "05:00"
+      timezone: Asia/Jakarta
+    open-pull-requests-limit: 5
+    assignees:
+      - hendisantika
+    labels:
+      - dependencies
+      - github_actions
+    commit-message:
+      prefix: "ci(deps)"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
